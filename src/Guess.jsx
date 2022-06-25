@@ -1,31 +1,27 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Button, IconButton, Stack, Slider } from '@mui/material';
+import {
+  Button,
+  IconButton,
+  Stack,
+  Slider,
+  Backdrop,
+  Grid,
+  Typography,
+} from '@mui/material';
 import {
   VolumeUp,
   VolumeDown,
-  VolumeMute,
+  VolumeOff,
   AccessTimeFilled,
 } from '@mui/icons-material';
 import YouTube from 'react-youtube';
+import { isMobile } from 'react-device-detect';
 import './Guess.css';
-
-// eslint-disable-next-line no-lone-blocks
-{
-  /* <iframe
-  id="videoYT"
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/JWjCCP79MnI?autoplay=1&amp;controls=0&amp;loop=1&amp;start=2&amp;mute=1"
-  title="Guess the Campus"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-/> */
-}
 
 function App() {
   const [player, setPlayer] = useState(null);
+  const [mobileInteract, setMobileInteract] = useState(false);
   const [volume, setVolume] = useState(50);
   const [muted, setMute] = useState(false);
   const [volumeVisible, setVolumeVisible] = useState(false);
@@ -37,13 +33,13 @@ function App() {
       setMute(false);
       player.unMute();
     } else {
-      player.mute();
       setMute(true);
+      player.mute();
     }
   }
 
   const handleVolumeClick = () => {
-    if (volumeVisible) {
+    if (volumeVisible || isMobile) {
       mute();
     } else {
       setVolumeVisible(true);
@@ -74,7 +70,18 @@ function App() {
     setPlayer(event.target);
     event.target.setVolume(50);
     setVolume(50);
+    if (isMobile) {
+      setMute(true);
+      event.target.mute();
+    }
+    event.target.playVideo();
   };
+
+  function updateMobileInteract() {
+    setMobileInteract(true);
+    setMute(false);
+    player.unMute();
+  }
 
   return (
     <motion.div
@@ -84,16 +91,34 @@ function App() {
       transition={{ duration: 0.2 }}
     >
       <div className="video-background" style={{ display: 'block' }}>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isMobile && !mobileInteract}
+          onClick={() => updateMobileInteract()}
+        >
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ minHeight: '100vh' }}
+          >
+            <Grid item xs={3}>
+              <Typography>Tap to unmute</Typography>
+            </Grid>
+          </Grid>
+        </Backdrop>
         <div className="video-foreground">
           <YouTube
-            videoId="JWjCCP79MnI"
+            videoId="vLSc7iliXlA"
             opts={{
               width: 1280,
               height: 720,
               playerVars: {
                 autoplay: 1,
                 loop: 1,
-                mute: 1,
+                start: 10,
               },
             }}
             onReady={onVideoReady}
@@ -115,7 +140,7 @@ function App() {
               spacing={0.5}
               direction="row"
               alignItems="center"
-              onMouseEnter={() => setVolumeVisible(true)}
+              onMouseEnter={() => !isMobile && setVolumeVisible(true)}
               onMouseLeave={() => setVolumeVisible(false)}
               sx={{ position: 'absolute', right: 3, bottom: 50 }}
             >
@@ -127,12 +152,16 @@ function App() {
                   sx={{ width: 125 }}
                 />
               )}
-              <IconButton aria-label="mute" onClick={() => handleVolumeClick()}>
+              <IconButton
+                id="volume-button"
+                aria-label="mute"
+                onClick={() => handleVolumeClick()}
+              >
                 {volume >= 50 && !muted && <VolumeUp color="primary" />}
                 {volume < 50 && volume > 0 && !muted && (
                   <VolumeDown color="primary" />
                 )}
-                {(volume === 0 || muted) && <VolumeMute color="primary" />}
+                {(volume === 0 || muted) && <VolumeOff color="primary" />}
               </IconButton>
             </Stack>
             <Stack
