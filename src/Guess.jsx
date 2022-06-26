@@ -118,6 +118,7 @@ function App() {
               playerVars: {
                 autoplay: 1,
                 loop: 1,
+                controls: 0,
                 start: 10,
               },
             }}
@@ -190,7 +191,14 @@ function App() {
                     { value: 2, label: '2x' },
                   ]}
                   onChange={handlePlaybackRateChange}
-                  sx={{ position: 'relative', height: 150, bottom: 20 }}
+                  sx={{
+                    position: 'relative',
+                    height: 150,
+                    bottom: 20,
+                    '& .MuiSlider-markLabel': {
+                      color: 'white',
+                    },
+                  }}
                 />
               )}
               {!playbackRateVisible && (
