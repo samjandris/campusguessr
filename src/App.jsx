@@ -9,8 +9,8 @@ function App() {
   return (
     <AnimatePresence exitBeforeEnter initial={false}>
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Main />} />
-        <Route path="/guess" element={<Guess />} />
+        <Route path="/" element={<Main location={location} />} />
+        <Route path="/guess" element={<Guess location={location} />} />
       </Routes>
     </AnimatePresence>
   );

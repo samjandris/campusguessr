@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -8,6 +9,8 @@ import {
   Backdrop,
   Grid,
   Typography,
+  Modal,
+  Box,
 } from '@mui/material';
 import {
   VolumeUp,
@@ -15,11 +18,36 @@ import {
   VolumeOff,
   AccessTimeFilled,
 } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import { isMobile } from 'react-device-detect';
 import './Guess.css';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Tooltip,
+  useMapEvents,
+} from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
+import 'leaflet-defaulticon-compatibility';
 
-function App() {
+const toPlayRandom = Math.random();
+
+function Guess(props) {
+  const { location } = props;
+
+  const [render, setRender] = useState(true);
+
+  const { data } = location.state;
+  const [toPlay, setToPlay] = useState(Math.floor(toPlayRandom * data.length));
+  const bounds = [];
+  Object.values(data).forEach((point) => {
+    bounds.push([point.location.latitude, point.location.longitude]);
+  });
+
   const [player, setPlayer] = useState(null);
   const [mobileInteract, setMobileInteract] = useState(false);
   const [volume, setVolume] = useState(50);
@@ -27,6 +55,10 @@ function App() {
   const [volumeVisible, setVolumeVisible] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [playbackRateVisible, setPlaybackRateVisible] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
+  const [selectedCampus, setSelectedCampus] = useState();
+  const [win, setWin] = useState();
+  const [finished, setFinished] = useState(false);
 
   function mute() {
     if (player.isMuted()) {
@@ -83,14 +115,28 @@ function App() {
     player.unMute();
   }
 
+  function MapClickComponent() {
+    useMapEvents({
+      click: () => {
+        setSelectedCampus();
+      },
+    });
+    return null;
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
+      key={render}
     >
-      <div className="video-background" style={{ display: 'block' }}>
+      <div
+        className="video-background"
+        style={{ display: 'block' }}
+        key={render}
+      >
         <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isMobile && !mobileInteract}
@@ -111,15 +157,16 @@ function App() {
         </Backdrop>
         <div className="video-foreground">
           <YouTube
-            videoId="vLSc7iliXlA"
+            videoId={data[toPlay].video_id}
             opts={{
               width: 1280,
               height: 720,
               playerVars: {
                 autoplay: 1,
+                playlist: data[toPlay].video_id,
                 loop: 1,
                 controls: 0,
-                start: 10,
+                start: data[toPlay].video_start,
               },
             }}
             onReady={onVideoReady}
@@ -127,6 +174,7 @@ function App() {
         </div>
         <Button
           variant="contained"
+          onClick={() => setMapOpen(true)}
           sx={{
             position: 'absolute',
             right: 15,
@@ -135,6 +183,145 @@ function App() {
         >
           Guess
         </Button>
+        <Modal open={mapOpen} onClose={() => setMapOpen(false)} keepMounted>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '80%',
+              height: '80%',
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              boxShadow: 24,
+              p: 1,
+            }}
+          >
+            <MapContainer
+              bounds={bounds}
+              scrollWheelZoom
+              onClick={() => setSelectedCampus()}
+              style={{ height: '100%', width: '100%' }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {data.map((uni) => (
+                <div key={uni.name}>
+                  <Marker
+                    position={[uni.location.latitude, uni.location.longitude]}
+                    eventHandlers={{
+                      click: () => {
+                        setSelectedCampus(uni.name);
+                      },
+                    }}
+                  >
+                    <Tooltip
+                      direction="right"
+                      offset={[0, 0]}
+                      opacity={0.65}
+                      permanent
+                    >
+                      {uni.name}
+                    </Tooltip>
+                  </Marker>
+                  <MapClickComponent />
+                </div>
+              ))}
+            </MapContainer>
+            {selectedCampus && !finished && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  if (selectedCampus === data[toPlay].name) {
+                    setFinished(true);
+                    setWin(true);
+                  } else {
+                    setFinished(true);
+                    setWin(false);
+                  }
+                }}
+                sx={{
+                  left: '1%',
+                  bottom: 60,
+                  width: '98%',
+                  zIndex: 999,
+                }}
+              >
+                Guess {selectedCampus}
+              </Button>
+            )}
+
+            {finished && (
+              <>
+                <Typography
+                  variant="h6"
+                  align="center"
+                  backgroundColor="rgba(255, 255, 255, 0.8)"
+                  sx={{
+                    position: 'absolute',
+                    left: 0,
+                    width: '100%',
+                    top: 5,
+                    zIndex: 999,
+                  }}
+                >
+                  {win
+                    ? 'You won!'
+                    : `Incorrect. The correct answer was ${data[toPlay].name}`}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  component={Link}
+                  to="/"
+                  sx={{
+                    left: '1%',
+                    bottom: 60,
+                    width: '48%',
+                    zIndex: 999,
+                  }}
+                >
+                  Exit
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    // eslint-disable-next-line no-constant-condition
+                    while (true) {
+                      const rand = Math.floor(Math.random() * data.length);
+                      if (rand !== toPlay) {
+                        setToPlay(rand);
+                        break;
+                      }
+                    }
+                    setPlayer(null);
+                    setVolume(50);
+                    setMute(false);
+                    setVolumeVisible(false);
+                    setPlaybackRate(1);
+                    setPlaybackRateVisible(false);
+                    setMapOpen(false);
+                    setSelectedCampus();
+                    setWin();
+                    setFinished(false);
+                    setRender(!render);
+                  }}
+                  sx={{
+                    left: '3%',
+                    bottom: 60,
+                    width: '48%',
+                    zIndex: 999,
+                  }}
+                >
+                  Play Again
+                </Button>
+              </>
+            )}
+          </Box>
+        </Modal>
         {player && (
           <>
             <Stack
@@ -217,4 +404,8 @@ function App() {
   );
 }
 
-export default App;
+Guess.propTypes = {
+  location: PropTypes.object.isRequired,
+};
+
+export default Guess;
