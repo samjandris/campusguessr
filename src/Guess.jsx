@@ -6,8 +6,6 @@ import {
   IconButton,
   Stack,
   Slider,
-  Backdrop,
-  Grid,
   Typography,
   Modal,
   Box,
@@ -49,7 +47,6 @@ function Guess(props) {
   });
 
   const [player, setPlayer] = useState(null);
-  const [mobileInteract, setMobileInteract] = useState(false);
   const [volume, setVolume] = useState(50);
   const [muted, setMute] = useState(false);
   const [volumeVisible, setVolumeVisible] = useState(false);
@@ -59,6 +56,8 @@ function Guess(props) {
   const [selectedCampus, setSelectedCampus] = useState();
   const [win, setWin] = useState();
   const [finished, setFinished] = useState(false);
+
+  // const [mobileInteract, setMobileInteract] = useState(false);
 
   function mute() {
     if (player.isMuted()) {
@@ -109,11 +108,11 @@ function Guess(props) {
     event.target.playVideo();
   };
 
-  function updateMobileInteract() {
-    setMobileInteract(true);
-    setMute(false);
-    player.unMute();
-  }
+  // function updateMobileInteract() {
+  //   setMobileInteract(true);
+  //   setMute(false);
+  //   player.unMute();
+  // }
 
   function MapClickComponent() {
     useMapEvents({
@@ -137,7 +136,7 @@ function Guess(props) {
         style={{ display: 'block' }}
         key={render}
       >
-        <Backdrop
+        {/* <Backdrop
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isMobile && !mobileInteract}
           onClick={() => updateMobileInteract()}
@@ -154,7 +153,7 @@ function Guess(props) {
               <Typography>Tap to unmute</Typography>
             </Grid>
           </Grid>
-        </Backdrop>
+        </Backdrop> */}
         <div className="video-foreground">
           <YouTube
             videoId={data[toPlay].video_id}
@@ -202,7 +201,7 @@ function Guess(props) {
               bounds={bounds}
               scrollWheelZoom
               onClick={() => setSelectedCampus()}
-              style={{ height: '100%', width: '100%' }}
+              style={{ height: '100%', width: '100%', zIndex: 99 }}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -247,7 +246,7 @@ function Guess(props) {
                   left: '1%',
                   bottom: 60,
                   width: '98%',
-                  zIndex: 999,
+                  zIndex: 99999,
                 }}
               >
                 Guess {selectedCampus}
@@ -265,7 +264,7 @@ function Guess(props) {
                     left: 0,
                     width: '100%',
                     top: 5,
-                    zIndex: 999,
+                    zIndex: 99999,
                   }}
                 >
                   {win
@@ -281,7 +280,7 @@ function Guess(props) {
                     left: '1%',
                     bottom: 60,
                     width: '48%',
-                    zIndex: 999,
+                    zIndex: 99999,
                   }}
                 >
                   Exit
@@ -313,7 +312,7 @@ function Guess(props) {
                     left: '3%',
                     bottom: 60,
                     width: '48%',
-                    zIndex: 999,
+                    zIndex: 99999,
                   }}
                 >
                   Play Again
