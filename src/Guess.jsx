@@ -180,7 +180,7 @@ function Guess(props) {
             bottom: 15,
           }}
         >
-          Guess
+          {finished ? 'Open Map' : 'Guess'}
         </Button>
         <Modal open={mapOpen} onClose={() => setMapOpen(false)} keepMounted>
           <Box
@@ -273,7 +273,7 @@ function Guess(props) {
                 </Typography>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="error"
                   component={Link}
                   to="/"
                   sx={{
@@ -283,10 +283,11 @@ function Guess(props) {
                     zIndex: 99999,
                   }}
                 >
-                  Exit
+                  Choose Map
                 </Button>
                 <Button
                   variant="contained"
+                  color="success"
                   onClick={() => {
                     // eslint-disable-next-line no-constant-condition
                     while (true) {
