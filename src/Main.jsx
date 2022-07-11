@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 import PlayBox from './components/PlayBox';
 import {
   Campuses,
@@ -14,8 +14,7 @@ import {
 const games = [
   {
     name: 'USA',
-    description:
-      'Take a tour of universities all across the United States adnadsahdhjikasbdjhkasbdjhkasbd afgbahdfgjhksdfgjkbnsdfj kgnsdfgnsdfgljkn',
+    description: 'Take a tour of universities all across the United States',
     image: USASmall,
     filterId: 'country',
     filterText: 'United States',
@@ -23,7 +22,8 @@ const games = [
   },
   {
     name: 'Massachusetts',
-    description: 'Take a tour of universities all across Massachusetts',
+    description:
+      'Travel to the state of Massachusetts and walk through at its universities',
     image: MassachusettsSmall,
     filterId: 'state',
     filterText: 'Massachusetts',
@@ -31,7 +31,8 @@ const games = [
   },
   {
     name: 'Boston',
-    description: 'Take a tour of universities in the Boston area',
+    description:
+      'Travel to the iconic city of Boston and take a guess at some of its most famous univerisities',
     image: BostonSmall,
     filterId: 'city',
     filterText: 'Boston',
@@ -47,7 +48,7 @@ const games = [
   },
   {
     name: 'New York',
-    description: 'Take a tour of universities in the Boston area',
+    description: 'Explore universities all throughout New York State',
     image: NewYorkSmall,
     filterId: 'state',
     filterText: 'New York',
@@ -71,31 +72,43 @@ function Main() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
     >
-      <Container justifyContent="center" sx={{ backgroundColor: 'lightGray' }}>
-        <br />
-        <Grid container justifyContent="center" spacing={4}>
-          {games.map((game) => (
-            <Grid
-              item
-              xs={10}
-              sm={6}
-              md={4}
-              lg={3}
-              key={game.name}
-              sx={{
-                display: 'flex',
-              }}
-            >
-              <PlayBox
-                name={game.name}
-                description={game.description}
-                image={game.image}
-                campuses={game.output}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <div
+        // justifyContent="center"
+        style={{
+          backgroundColor: '#C0C8D5',
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        <Container>
+          <br />
+          <Typography variant="h3" sx={{ mb: 2 }}>
+            Featured
+          </Typography>
+          <Grid container justifyContent="center" spacing={4}>
+            {games.map((game) => (
+              <Grid
+                item
+                xs={10}
+                sm={6}
+                md={4}
+                lg={3}
+                key={game.name}
+                sx={{
+                  display: 'flex',
+                }}
+              >
+                <PlayBox
+                  name={game.name}
+                  description={game.description}
+                  image={game.image}
+                  campuses={game.output}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </div>
     </motion.div>
   );
 }

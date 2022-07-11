@@ -154,8 +154,13 @@ function Guess(props) {
             </Grid>
           </Grid>
         </Backdrop> */}
-        <div className="video-foreground">
+        <div
+          onClick={() => player.playVideo()}
+          aria-hidden="true"
+          style={{ width: '100%', height: '100%' }}
+        >
           <YouTube
+            className="video-foreground"
             videoId={data[toPlay].video_id}
             opts={{
               width: 1280,
