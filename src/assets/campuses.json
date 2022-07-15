@@ -1761,5 +1761,45 @@
       "latitude": 42.358579750000004,
       "longitude": -71.09651884329608
     }
+  },
+  {
+    "name": "Bryant University",
+    "video_title": "Bryant University - Virtual Walking Tour [4k 60fps]",
+    "video_id": "BFLG-44vzO4",
+    "video_start": 30,
+    "location": {
+      "amenity": "Bryant University",
+      "house_number": "1150",
+      "road": "Douglas Pike",
+      "town": "Smithfield",
+      "county": "Providence County",
+      "state": "Rhode Island",
+      "ISO3166-2-lvl4": "US-RI",
+      "postcode": "02917",
+      "country": "United States",
+      "country_code": "us",
+      "latitude": 41.922091449999996,
+      "longitude": -71.53715173504338
+    }
+  },
+  {
+    "name": "Lehigh University",
+    "video_title": "Lehigh University - Virtual Walking Tour [4k 60fps]",
+    "video_id": "l7EmIWWDSpY",
+    "video_start": 30,
+    "location": {
+      "leisure": "Front Lawn",
+      "road": "Library Drive",
+      "neighbourhood": "Sayre Park",
+      "city": "Bethlehem",
+      "county": "Northampton County",
+      "state": "Pennsylvania",
+      "ISO3166-2-lvl4": "US-PA",
+      "postcode": "18015",
+      "country": "United States",
+      "country_code": "us",
+      "latitude": 40.6068659,
+      "longitude": -75.37818839683044
+    }
   }
 ]
