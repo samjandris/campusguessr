@@ -75,7 +75,6 @@ function Main() {
       <div
         // justifyContent="center"
         style={{
-          backgroundColor: '#C0C8D5',
           width: '100%',
           height: '100%',
         }}

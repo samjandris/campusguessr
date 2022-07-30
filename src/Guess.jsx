@@ -362,7 +362,11 @@ function Guess(props) {
               direction="column"
               onMouseEnter={() => setPlaybackRateVisible(true)}
               onMouseLeave={() => setPlaybackRateVisible(false)}
-              sx={{ position: 'absolute', right: 3, bottom: 80 }}
+              sx={{
+                position: 'absolute',
+                right: 3,
+                bottom: 80,
+              }}
             >
               {playbackRateVisible && (
                 <Slider
