@@ -10,14 +10,11 @@ Still early in development, currently **not** priority during university semeste
 
 ### `npm run build`
 
-Builds the website using webpack.\
-Outputs to the `build` folder.
+Builds the website using Next.js
+Run `npm run start` to deploy the webserver.
 
 ## Development
 
-### `npm start` - defaults to chrome
+### `npm run dev`
 
 Starts the website in the development mode, allowing for live editing.
-
-Load `build` as the folder for the unpacked extension.\
-The `build` folder will update as you save changes.
