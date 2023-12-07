@@ -6,12 +6,11 @@ Still early in development, currently **not** priority during university semeste
 
 ### `npm install` inside of the project directory.
 
-## Building
+## Building & Deploying
 
-### `npm run build`
+### `npm run build` - Builds the website for production.
 
-Builds the website using Next.js
-Run `npm run start` to deploy the webserver.
+### `npm run start` - Starts the website in production mode at `localhost:3000`
 
 ## Development
 
