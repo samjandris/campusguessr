@@ -1,9 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Game({
   data,
@@ -13,10 +12,8 @@ export default function Game({
   const router = useRouter();
 
   function loadGame() {
-    if (!data) return;
-
-    console.log('clicked');
-    router.push('/guess/' + data.filterId + '/' + data.filterValue);
+    if (data && data.filterId && data.filterValue)
+      router.push('/guess/' + data.filterId + '/' + data.filterValue);
   }
 
   return data ? (

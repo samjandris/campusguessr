@@ -1,6 +1,6 @@
 'use client';
 
-import Game from '@/components/Game';
+import Game from '@/components/GameMode';
 
 const modes = [
   {

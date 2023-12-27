@@ -1,26 +1,29 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import '@/styles/guess.css';
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 const LeafletMap = dynamic(() => import('@/components/LeafletMap'));
 
-export default function Guess({ params }: { params: { filter: string[] } }) {
-  const [data, setData] = useState([
-    { name: 'test1', location: { latitude: 23, longitude: 24 } },
-    { name: 'test2', location: { latitude: 27, longitude: 28 } },
-    { name: 'test3', location: { latitude: 31, longitude: 35 } },
-  ]);
-  const [mounted, setMounted] = useState(false);
+import '@/styles/guess.css';
 
-  const bounds: [number, number][] = [];
-  Object.values(data).forEach((point) => {
-    bounds.push([point.location.latitude, point.location.longitude]);
-  });
+import { filterCampus } from '@/lib/game';
+
+export default function Guess({ params }: { params: { filter: string[] } }) {
+  const [data, setData] = useState<{}[]>([]);
+  const [bounds, setBounds] = useState<[number, number][]>([]);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (params.filter.length !== 2) return;
+    filterCampus(params.filter[0], params.filter[1]).then((resData) => {
+      const newBounds: [number, number][] = [];
+      Object.values(resData).forEach((point: any) => {
+        newBounds.push([point.location.latitude, point.location.longitude]);
+      });
+
+      setData(resData);
+      setBounds(newBounds);
+    });
+  }, [params.filter]);
 
   return (
     <div>
@@ -29,7 +32,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
       <h4>{params.filter[1]}</h4>
 
       <div className="h-full">
-        {mounted && (
+        {data.length > 0 && (
           <div className="absolute right-5 bottom-5 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all overflow-hidden">
             <LeafletMap
               locations={data}
