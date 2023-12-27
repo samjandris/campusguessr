@@ -6,6 +6,7 @@ import {
   Marker,
   Tooltip,
   useMapEvents,
+  useMap,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
@@ -30,11 +31,39 @@ export default function LeafletMap({
     return null;
   }
 
+  function MapRedrawComponent() {
+    const map = useMap();
+
+    function redrawMap() {
+      const redrawInterval = setInterval(() => {
+        map.invalidateSize();
+      }, 5);
+
+      setTimeout(() => {
+        clearInterval(redrawInterval);
+      }, 250);
+    }
+
+    useMapEvents({
+      mouseover: () => {
+        console.log('mouse entered map');
+        redrawMap();
+      },
+
+      mouseout: () => {
+        console.log('mouse left map');
+        redrawMap();
+      },
+    });
+
+    return null;
+  }
+
   return (
     <MapContainer
       bounds={bounds}
       scrollWheelZoom
-      style={{ height: '100%', width: '100%', zIndex: 99 }}
+      className="h-full w-full z-[99] rounded-xl"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -64,6 +93,7 @@ export default function LeafletMap({
               </Tooltip>
             </Marker>
             <MapClickComponent />
+            <MapRedrawComponent />
           </div>
         )
       )}
