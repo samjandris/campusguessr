@@ -1,94 +1,69 @@
-import React from 'react';
-import { Container, Grid } from '@mui/material';
-import PlayBox from '@/components/PlayBox';
-// import {
-//   USASmall,
-//   BostonSmall,
-//   PhiladelphiaSmall,
-//   NewYorkSmall,
-//   MassachusettsSmall,
-// } from '@/assets/images';
+'use client';
 
-const games: {
-  name: string;
-  description: string;
-  image: string;
-  filterId: string;
-  filterText: string;
-}[] = [
+import Game from '@/components/Game';
+
+const modes = [
   {
-    name: 'USA',
-    description: 'Take a tour of universities all across the United States',
+    name: 'New York',
     image:
-      'https://campusguessr.com/static/media/usa-small.5539698b9a09a3e23541.jpg',
-    filterId: 'country',
-    filterText: 'United States',
-  },
-  {
-    name: 'Massachusetts',
-    description:
-      'Travel to the state of Massachusetts and walk through at its universities',
-    image:
-      'https://campusguessr.com/static/media/massachusetts-small.73da9d20f1bc7aecf8b2.jpg',
+      'https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     filterId: 'state',
-    filterText: 'Massachusetts',
-  },
-  {
-    name: 'Boston',
-    description:
-      'Travel to the iconic city of Boston and take a guess at some of its most famous univerisities',
-    image:
-      'https://campusguessr.com/static/media/boston-small.b098213c09adace30b8e.jpg',
-    filterId: 'city',
-    filterText: 'Boston',
+    filterValue: 'new york',
   },
   {
     name: 'Philadelphia',
-    description: 'Take a tour of universities in the Philadelphia area',
     image:
-      'https://campusguessr.com/static/media/philadelphia-small.8ea1b937b439c7e921a0.jpg',
+      'https://images.unsplash.com/photo-1569761316261-9a8696fa2ca3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     filterId: 'city',
-    filterText: 'Philadelphia',
+    filterValue: 'philadelphia',
   },
   {
-    name: 'New York',
-    description: 'Explore universities all throughout New York State',
+    name: 'Liberal Arts',
     image:
-      'https://campusguessr.com/static/media/new-york-small.187963b0671b93422454.jpg',
-    filterId: 'state',
-    filterText: 'New York',
+      'https://images.unsplash.com/photo-1596567181723-ba7d15eacefb?q=80&w=1527&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    filterId: 'type',
+    filterValue: 'liberalArts',
+  },
+  {
+    name: 'Medical Schools',
+    image:
+      'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    filterId: 'type',
+    filterValue: 'medical',
+  },
+  {
+    name: 'Law Schools',
+    image:
+      'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    filterId: 'type',
+    filterValue: 'law',
+  },
+  {
+    name: 'Ivy League',
+    image:
+      'https://images.unsplash.com/photo-1623631484725-fef26b75b402?q=80&w=1402&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    filterId: 'type',
+    filterValue: 'ivyLeague',
   },
 ];
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <Container>
-      {/* <Typography variant="h3" sx={{ mt: 10, mb: 2 }}>
-        Featured
-      </Typography> */}
-      <Grid container justifyContent="center" spacing={4} sx={{ mt: 4, mb: 4 }}>
-        {games.map((game) => (
-          <Grid
-            item
-            xs={10}
-            sm={6}
-            md={4}
-            lg={3}
-            key={game.name}
-            sx={{
-              display: 'flex',
+    <div className="flex flex-col items-center justify-center">
+      <h1 className="mt-10 mb-14">CampusGuessr</h1>
+      <div className="flex flex-wrap justify-center gap-6">
+        {modes.map((mode) => (
+          <Game
+            key={mode.name}
+            data={{
+              name: mode.name,
+              image: mode.image,
+              filterId: mode.filterId,
+              filterValue: mode.filterValue,
             }}
-          >
-            <PlayBox
-              name={game.name}
-              description={game.description}
-              image={game.image}
-              filterId={game.filterId}
-              filterValue={game.filterText}
-            />
-          </Grid>
+          />
         ))}
-      </Grid>
-    </Container>
+      </div>
+    </div>
   );
 }
