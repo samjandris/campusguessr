@@ -19,12 +19,12 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <Button color="inherit" component={Link} href="/">
             Featured
           </Button>
-          <Button color="inherit" component={Link} href="/categories">
+          {/* <Button color="inherit" component={Link} href="/categories">
             Categories
           </Button>
           <Button color="inherit" component={Link} href="/leaderboard">
             Leaderboard
-          </Button>
+          </Button> */}
         </Toolbar>
       </AppBar>
       <Box

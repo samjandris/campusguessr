@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Grid } from '@mui/material';
 import PlayBox from '@/components/PlayBox';
 // import {
-//   // USASmall,
+//   USASmall,
 //   BostonSmall,
 //   PhiladelphiaSmall,
 //   NewYorkSmall,
@@ -66,7 +66,7 @@ export default function HomePage() {
       {/* <Typography variant="h3" sx={{ mt: 10, mb: 2 }}>
         Featured
       </Typography> */}
-      <Grid container justifyContent="center" spacing={4} sx={{ mt: 4 }}>
+      <Grid container justifyContent="center" spacing={4} sx={{ mt: 4, mb: 4 }}>
         {games.map((game) => (
           <Grid
             item

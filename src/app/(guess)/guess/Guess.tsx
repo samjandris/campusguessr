@@ -137,7 +137,7 @@ export default function GuessPage() {
       searchParams.get('filterId'),
       searchParams.get('filterValue')
     ).then((res) => {
-      setData(res as []);
+      setData(res);
     });
   }, []);
 
