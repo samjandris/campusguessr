@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { Button } from '@/components/ui/button';
 const LeafletMap = dynamic(() => import('@/components/LeafletMap'));
 
 import '@/styles/guess.css';
@@ -33,7 +34,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
 
       <div className="h-full">
         {data.length > 0 && (
-          <div className="absolute right-5 bottom-5 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all overflow-hidden">
+          <div className="absolute right-5 bottom-5 rounded-xl shadow-lg shadow-gray-400 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all duration-300">
             <LeafletMap
               locations={data}
               bounds={bounds}
@@ -41,6 +42,13 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
                 console.log('clicked on map');
               }}
             />
+            <Button
+              variant="outline"
+              size="sm"
+              className="absolute right-1 bottom-5"
+            >
+              Guess
+            </Button>
           </div>
         )}
       </div>

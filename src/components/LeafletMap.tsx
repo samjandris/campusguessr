@@ -41,7 +41,7 @@ export default function LeafletMap({
 
       setTimeout(() => {
         clearInterval(redrawInterval);
-      }, 250);
+      }, 300);
     }
 
     useMapEvents({
@@ -63,7 +63,7 @@ export default function LeafletMap({
     <MapContainer
       bounds={bounds}
       scrollWheelZoom
-      className="h-full w-full z-[99] rounded-xl"
+      className="w-full h-full rounded-xl z-0"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
