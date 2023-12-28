@@ -1,15 +1,12 @@
 .video-background {
-  background: #000;
-  display: none;
   position: fixed;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
+  transition: all 1s ease-in-out;
 }
 
-.video-foreground,
-.video-background iframe {
+.video,
+.video iframe {
   position: absolute;
   top: 0;
   left: 0;
@@ -19,22 +16,26 @@
 }
 
 @media (min-aspect-ratio: 16/9) {
-  .video-foreground {
+  .video {
     height: 300%;
     top: -100%;
   }
 }
 
 @media (max-aspect-ratio: 16/9) {
-  .video-foreground {
+  .video {
     width: 300%;
     left: -100%;
   }
 }
 
 @media all and (max-width: 600px) {
-  .video-foreground,
-  .video-background iframe {
+  .video,
+  .video iframe {
     transform: scale(1.1);
   }
+}
+
+*[data-visible='false'] {
+  opacity: 0;
 }

@@ -16,10 +16,12 @@ export default function LeafletMap({
   locations,
   bounds,
   onClick,
+  onReady,
 }: {
   locations: any[];
   bounds: [number, number][];
   onClick: (uniName: string) => void;
+  onReady: () => void;
 }) {
   function MapClickComponent() {
     useMapEvents({
@@ -64,6 +66,7 @@ export default function LeafletMap({
       bounds={bounds}
       scrollWheelZoom
       className="w-full h-full rounded-xl z-0"
+      whenReady={onReady}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

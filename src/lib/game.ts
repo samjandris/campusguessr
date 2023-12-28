@@ -1,19 +1,17 @@
 'use server';
 
+import { Campus } from '@/lib/types';
+
 import campuses from '@/data/campuses.json';
 
-// TODO: implement proper return types, including "results"
 export async function filterCampus(
   filterId: string,
   filterValue: string
-): Promise<{}[]> {
+): Promise<Campus[]> {
   const filterIdDecode = decodeURI(filterId).toLowerCase();
   const filterValueDecode = decodeURI(filterValue).toLowerCase();
 
-  const results: {
-    name: string;
-    location: { latitude: number; longitude: number };
-  }[] = [];
+  const results: Campus[] = [];
 
   campuses.forEach((campus: any) => {
     if (filterIdDecode === 'type') {
