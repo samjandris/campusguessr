@@ -91,6 +91,7 @@ export default function LeafletMap({
                 offset={[0, 0]}
                 opacity={0.65}
                 permanent
+                className="font-semibold font-sans text-sm"
               >
                 {uni.name}
               </Tooltip>

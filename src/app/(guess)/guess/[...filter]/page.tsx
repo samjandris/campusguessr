@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
@@ -18,25 +19,19 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
   const [campusToPlay, setCampusToPlay] = useState(0);
 
   const [youtubePlayer, setYoutubePlayer] = useState<YouTubePlayer>(null);
-  const [youtubePlayerMuted, setYoutubePlayerMuted] = useState<boolean>(true);
-  const [youtubePlayerVolume, updateYoutubePlayerVolume] = useReducer(
-    (_prevVolume: number, newVolume: number) => {
-      if (newVolume < 0) {
-        newVolume = 0;
-      } else if (newVolume > 100) {
-        newVolume = 100;
-      }
-
-      youtubePlayer.setVolume(newVolume);
-      return newVolume;
-    },
-    50
-  );
+  const [youtubePlayerMuted, setYoutubePlayerMuted] = useState(true);
+  const [youtubePlayerVolume, setYoutubePlayerVolume] = useState(50);
 
   const [mapVisible, setMapVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
 
   const [selectedCampus, setSelectedCampus] = useState('');
+
+  function updateYoutubePlayerVolume(newVolume: number) {
+    const clampedVolume = Math.min(Math.max(newVolume, 0), 100);
+    youtubePlayer.setVolume(clampedVolume);
+    setYoutubePlayerVolume(clampedVolume);
+  }
 
   const onVideoReady = (event: YouTubeEvent) => {
     setYoutubePlayer(event.target);
@@ -70,7 +65,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             className="flex justify-center items-center h-screen transition-all duration-1000"
             data-visible={!videoVisible}
           >
-            <h1>Starting Game</h1>
+            <h1>The game is about to start</h1>
           </div>
           <div
             className="video-background w-full h-full"
@@ -114,15 +109,16 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             />
           </div>
 
-          {selectedCampus && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="absolute left-5 bottom-5"
-            >
-              Guess {selectedCampus}
+          <div className="flex gap-2 absolute left-5 bottom-5">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/">Go Back</Link>
             </Button>
-          )}
+            {selectedCampus && (
+              <Button variant="outline" size="sm">
+                Guess {selectedCampus}
+              </Button>
+            )}
+          </div>
 
           <div
             className="flex gap-2 items-center absolute right-5 top-5 transition-all duration-300"
