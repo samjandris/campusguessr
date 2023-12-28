@@ -17,7 +17,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
   const [mapBounds, setMapBounds] = useState<[number, number][]>([]);
   const [campusToPlay, setCampusToPlay] = useState(0);
 
-  const [youtubePlayer, setYoutubePlayer] = useState<YouTubePlayer>();
+  const [youtubePlayer, setYoutubePlayer] = useState<YouTubePlayer>(null);
   const [youtubePlayerMuted, setYoutubePlayerMuted] = useState<boolean>(true);
   const [youtubePlayerVolume, updateYoutubePlayerVolume] = useReducer(
     (_prevVolume: number, newVolume: number) => {
@@ -124,7 +124,10 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             </Button>
           )}
 
-          <div className="flex gap-2 items-center absolute right-5 top-5">
+          <div
+            className="flex gap-2 items-center absolute right-5 top-5 transition-all duration-300"
+            data-visible={youtubePlayer !== null}
+          >
             <Button
               variant="outline"
               size="sm"
