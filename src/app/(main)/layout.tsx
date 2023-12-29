@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import NavBar from '@/components/NavBar';
 
 export const metadata: Metadata = {
   title: 'CampusGuessr',
@@ -11,10 +10,5 @@ export default function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div>
-      {/* <NavBar /> */}
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 }

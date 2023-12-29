@@ -5,11 +5,11 @@ export default async function Home() {
   const modes = await getModes();
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <main className="flex flex-col items-center justify-center">
       <h1 className="mt-10 mb-14">CampusGuessr</h1>
 
       {modes.map((mode) => (
-        <div key={mode.title} className="mb-20">
+        <section key={mode.title} className="mb-20">
           <h4 className="mb-5 text-4xl text-center">{mode.title}</h4>
           <div className="flex flex-wrap justify-center gap-6">
             {mode.data.map((modeData) => (
@@ -24,8 +24,8 @@ export default async function Home() {
               />
             ))}
           </div>
-        </div>
+        </section>
       ))}
-    </div>
+    </main>
   );
 }

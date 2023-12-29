@@ -6,7 +6,7 @@ import campuses from '@/data/campuses.json';
 
 const modes: Mode[] = [
   {
-    title: 'Cities',
+    title: 'Countries & Cities',
     data: [
       {
         name: 'United States',
@@ -30,13 +30,6 @@ const modes: Mode[] = [
         filterValue: 'massachusetts',
       },
       {
-        name: 'California',
-        image:
-          'https://images.unsplash.com/photo-1503891450247-ee5f8ec46dc3?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        filterId: 'state',
-        filterValue: 'california',
-      },
-      {
         name: 'Philadelphia',
         image:
           'https://images.unsplash.com/photo-1569761316261-9a8696fa2ca3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -45,39 +38,39 @@ const modes: Mode[] = [
       },
     ],
   },
-  {
-    title: 'Specialty Schools',
-    data: [
-      {
-        name: 'Liberal Arts',
-        image:
-          'https://images.unsplash.com/photo-1596567181723-ba7d15eacefb?q=80&w=1527&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        filterId: 'type',
-        filterValue: 'liberalArts',
-      },
-      {
-        name: 'Medical',
-        image:
-          'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        filterId: 'type',
-        filterValue: 'medical',
-      },
-      {
-        name: 'Law',
-        image:
-          'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        filterId: 'type',
-        filterValue: 'law',
-      },
-      {
-        name: 'Ivy League',
-        image:
-          'https://images.unsplash.com/photo-1623631484725-fef26b75b402?q=80&w=1402&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        filterId: 'type',
-        filterValue: 'ivyLeague',
-      },
-    ],
-  },
+  // {
+  //   title: 'Specialty Schools',
+  //   data: [
+  //     {
+  //       name: 'Liberal Arts',
+  //       image:
+  //         'https://images.unsplash.com/photo-1596567181723-ba7d15eacefb?q=80&w=1527&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //       filterId: 'type',
+  //       filterValue: 'liberalArts',
+  //     },
+  //     {
+  //       name: 'Medical',
+  //       image:
+  //         'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //       filterId: 'type',
+  //       filterValue: 'medical',
+  //     },
+  //     {
+  //       name: 'Law',
+  //       image:
+  //         'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //       filterId: 'type',
+  //       filterValue: 'law',
+  //     },
+  //     {
+  //       name: 'Ivy League',
+  //       image:
+  //         'https://images.unsplash.com/photo-1623631484725-fef26b75b402?q=80&w=1402&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //       filterId: 'type',
+  //       filterValue: 'ivyLeague',
+  //     },
+  //   ],
+  // },
 ];
 
 export async function getModes(): Promise<Mode[]> {

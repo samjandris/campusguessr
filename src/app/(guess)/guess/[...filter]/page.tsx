@@ -18,9 +18,9 @@ const LeafletMap = dynamic(() => import('@/components/LeafletMap'));
 
 import '@/styles/guess.css';
 import {
-  IconSearch,
-  IconVolumeDown,
-  IconVolumeUp,
+  SearchIcon,
+  VolumeDownIcon,
+  VolumeUpIcon,
 } from '@/components/ui/Icons';
 
 import { Campus } from '@/lib/types';
@@ -30,6 +30,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
   const [data, setData] = useState<Campus[]>([]);
   const [mapBounds, setMapBounds] = useState<[number, number][]>([]);
   const [campusToPlay, setCampusToPlay] = useState(0);
+  const [round, setRound] = useState(1);
 
   const [youtubePlayer, setYoutubePlayer] = useState<YouTubePlayer>(null);
   const [youtubePlayerMuted, setYoutubePlayerMuted] = useState(true);
@@ -59,6 +60,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
     setVideoVisible(false);
     setSelectedCampus('');
     setWinStatus(null);
+    setRound(round + 1);
 
     setTimeout(() => {
       setCampusToPlay((prevToPlay) => {
@@ -99,12 +101,16 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
   return (
     <div className="h-full">
       {data.length > 0 && (
-        <div>
+        <main>
           <div
             className="flex justify-center items-center h-screen transition-all duration-1000"
             data-visible={!videoVisible}
           >
-            <h1>The game is about to start</h1>
+            <h1>
+              {round > 1
+                ? 'The next round will begin shortly'
+                : 'The game is about to start'}
+            </h1>
           </div>
           <div
             className="video-background w-full h-full"
@@ -164,7 +170,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
                 setSearchOpen(true);
               }}
             >
-              <IconSearch />
+              <SearchIcon />
             </Button>
             <Link href="/">
               <Button variant="shadow">Exit</Button>
@@ -193,7 +199,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
                 updateYoutubePlayerVolume(youtubePlayerVolume - 10);
               }}
             >
-              <IconVolumeDown />
+              <VolumeDownIcon />
             </Button>
             <Button
               variant="shadow"
@@ -202,7 +208,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
                 updateYoutubePlayerVolume(youtubePlayerVolume + 10);
               }}
             >
-              <IconVolumeUp />
+              <VolumeUpIcon />
             </Button>
           </div>
 
@@ -272,7 +278,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
               </ModalFooter>
             </ModalContent>
           </Modal>
-        </div>
+        </main>
       )}
     </div>
   );
