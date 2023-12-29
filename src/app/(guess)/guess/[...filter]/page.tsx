@@ -2,18 +2,37 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
 import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
 const LeafletMap = dynamic(() => import('@/components/LeafletMap'));
 
-import { Volume1, Volume2 } from 'lucide-react';
+import { Search, Volume1, Volume2 } from 'lucide-react';
 import '@/styles/guess.css';
 
 import { Campus } from '@/lib/types';
 import { filterCampus } from '@/lib/game';
 
 export default function Guess({ params }: { params: { filter: string[] } }) {
+  const router = useRouter();
   const [data, setData] = useState<Campus[]>([]);
   const [mapBounds, setMapBounds] = useState<[number, number][]>([]);
   const [campusToPlay, setCampusToPlay] = useState(0);
@@ -24,13 +43,36 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
 
   const [mapVisible, setMapVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const [selectedCampus, setSelectedCampus] = useState('');
+  const [winStatus, setWinStatus] = useState<boolean | null>(null);
 
   function updateYoutubePlayerVolume(newVolume: number) {
     const clampedVolume = Math.min(Math.max(newVolume, 0), 100);
     youtubePlayer.setVolume(clampedVolume);
     setYoutubePlayerVolume(clampedVolume);
+  }
+
+  function checkWin() {
+    setWinStatus(selectedCampus === data[campusToPlay].name);
+  }
+
+  function newGame() {
+    setVideoVisible(false);
+    setSelectedCampus('');
+    setWinStatus(null);
+
+    setTimeout(() => {
+      setCampusToPlay((prevToPlay) => {
+        let toPlay = Math.floor(Math.random() * data.length);
+        while (prevToPlay === toPlay) {
+          toPlay = Math.floor(Math.random() * data.length);
+        }
+
+        return toPlay;
+      });
+    }, 1000);
   }
 
   const onVideoReady = (event: YouTubeEvent) => {
@@ -72,6 +114,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             data-visible={videoVisible}
           >
             <YouTube
+              key={campusToPlay}
               className="video"
               videoId={data[campusToPlay].video_id}
               opts={{
@@ -93,7 +136,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
           </div>
 
           <div
-            className="absolute right-5 bottom-5 rounded-xl shadow-lg shadow-gray-700 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all duration-300"
+            className="absolute right-5 bottom-16 rounded-xl shadow-lg shadow-gray-700 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all duration-300"
             data-visible={mapVisible}
           >
             <LeafletMap
@@ -109,15 +152,27 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             />
           </div>
 
-          <div className="flex gap-2 absolute left-5 bottom-5">
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/">Go Back</Link>
+          <div className="flex gap-2 items-center absolute right-5 bottom-5">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!selectedCampus}
+              onClick={checkWin}
+            >
+              {selectedCampus ? 'Guess ' + selectedCampus : 'Place Your Guess'}
             </Button>
-            {selectedCampus && (
-              <Button variant="outline" size="sm">
-                Guess {selectedCampus}
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                setSearchOpen(true);
+              }}
+            >
+              <Search />
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/">Exit</Link>
+            </Button>
           </div>
 
           <div
@@ -155,6 +210,54 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
               <Volume2 />
             </Button>
           </div>
+
+          <AlertDialog open={winStatus !== null}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  {winStatus ? 'Congratulations!' : 'Sorry, try again!'}
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  {winStatus
+                    ? 'You guessed it right!'
+                    : 'You guessed it wrong! The correct answer was ' +
+                      data[campusToPlay].name +
+                      '.'}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel
+                  onClick={() => {
+                    router.push('/');
+                  }}
+                >
+                  Go Home
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={newGame}>
+                  Play Again
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+            <CommandInput placeholder="Type a campus to search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              {data.map((campus) => (
+                <CommandItem
+                  key={campus.name}
+                  className="cursor-pointer"
+                  onSelect={() => {
+                    setSelectedCampus(campus.name);
+                    setSearchOpen(false);
+                  }}
+                >
+                  <span>{campus.name}</span>
+                </CommandItem>
+              ))}
+            </CommandList>
+          </CommandDialog>
         </div>
       )}
     </div>

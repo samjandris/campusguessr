@@ -48,12 +48,10 @@ export default function LeafletMap({
 
     useMapEvents({
       mouseover: () => {
-        console.log('mouse entered map');
         redrawMap();
       },
 
       mouseout: () => {
-        console.log('mouse left map');
         redrawMap();
       },
     });
