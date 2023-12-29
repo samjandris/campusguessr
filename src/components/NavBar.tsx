@@ -1,18 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from '@/components/ui/navigation-menu';
-import { navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 
 export default function NavBar() {
   return (
     <div className="flex justify-center p-1">
-      <NavigationMenu>
+      {/* <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
@@ -36,7 +29,7 @@ export default function NavBar() {
             </Link>
           </NavigationMenuItem>
         </NavigationMenuList>
-      </NavigationMenu>
+      </NavigationMenu> */}
     </div>
   );
 }

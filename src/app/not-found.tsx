@@ -1,21 +1,21 @@
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Button } from '@nextui-org/react';
 
 export default function NotFound() {
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-secondary p-6 rounded-lg shadow-lg justify-center">
+      <div className="bg-content2 p-6 rounded-3xl shadow-lg justify-center">
         <h1 className="text-center">404 - Page Not Found</h1>
-        <div className="mt-2 mb-5">
+        <div className="mt-5 mb-5">
           <h4 className="text-center">
             Oops! The page you are looking for does not exist.
           </h4>
           <h4 className="text-center">It might have been moved or deleted.</h4>
         </div>
         <div className="flex justify-center">
-          <Button asChild>
-            <Link href="/">Go Home</Link>
-          </Button>
+          <Link href="/">
+            <Button>Go Home</Button>
+          </Link>
         </div>
       </div>
     </div>

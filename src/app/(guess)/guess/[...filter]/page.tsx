@@ -2,37 +2,31 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { Button } from '@/components/ui/button';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
+  Button,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Autocomplete,
+  AutocompleteItem,
+} from '@nextui-org/react';
 import YouTube, { YouTubePlayer, YouTubeEvent } from 'react-youtube';
 const LeafletMap = dynamic(() => import('@/components/LeafletMap'));
 
-import { Search, Volume1, Volume2 } from 'lucide-react';
 import '@/styles/guess.css';
+import {
+  IconSearch,
+  IconVolumeDown,
+  IconVolumeUp,
+} from '@/components/ui/Icons';
 
 import { Campus } from '@/lib/types';
 import { filterCampus } from '@/lib/game';
 
 export default function Guess({ params }: { params: { filter: string[] } }) {
-  const router = useRouter();
   const [data, setData] = useState<Campus[]>([]);
   const [mapBounds, setMapBounds] = useState<[number, number][]>([]);
   const [campusToPlay, setCampusToPlay] = useState(0);
@@ -43,7 +37,9 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
 
   const [mapVisible, setMapVisible] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+
   const [searchOpen, setSearchOpen] = useState(false);
+  const [gameOverOpen, setGameOverOpen] = useState(false);
 
   const [selectedCampus, setSelectedCampus] = useState('');
   const [winStatus, setWinStatus] = useState<boolean | null>(null);
@@ -56,6 +52,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
 
   function checkWin() {
     setWinStatus(selectedCampus === data[campusToPlay].name);
+    setGameOverOpen(true);
   }
 
   function newGame() {
@@ -136,7 +133,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
           </div>
 
           <div
-            className="absolute right-5 bottom-16 rounded-xl shadow-lg shadow-gray-700 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all duration-300"
+            className="absolute right-5 bottom-20 rounded-xl shadow-lg shadow-gray-700 w-[250px] h-[200px] opacity-50 hover:w-[600px] hover:h-[500px] hover:opacity-100 transition-all duration-300"
             data-visible={mapVisible}
           >
             <LeafletMap
@@ -154,25 +151,24 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
 
           <div className="flex gap-2 items-center absolute right-5 bottom-5">
             <Button
-              variant="outline"
-              size="sm"
-              disabled={!selectedCampus}
-              onClick={checkWin}
+              variant="shadow"
+              isDisabled={!selectedCampus}
+              onPress={checkWin}
             >
               {selectedCampus ? 'Guess ' + selectedCampus : 'Place Your Guess'}
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
+              variant="shadow"
+              isIconOnly
+              onPress={() => {
                 setSearchOpen(true);
               }}
             >
-              <Search />
+              <IconSearch />
             </Button>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/">Exit</Link>
-            </Button>
+            <Link href="/">
+              <Button variant="shadow">Exit</Button>
+            </Link>
           </div>
 
           <div
@@ -180,9 +176,8 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             data-visible={youtubePlayer !== null}
           >
             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
+              variant="shadow"
+              onPress={() => {
                 youtubePlayerMuted
                   ? youtubePlayer.unMute()
                   : youtubePlayer.mute();
@@ -192,72 +187,91 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
               {youtubePlayerMuted ? 'Unmute' : 'Mute'}
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
+              variant="shadow"
+              isIconOnly
+              onPress={() => {
                 updateYoutubePlayerVolume(youtubePlayerVolume - 10);
               }}
             >
-              <Volume1 />
+              <IconVolumeDown />
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              onClick={() => {
+              variant="shadow"
+              isIconOnly
+              onPress={() => {
                 updateYoutubePlayerVolume(youtubePlayerVolume + 10);
               }}
             >
-              <Volume2 />
+              <IconVolumeUp />
             </Button>
           </div>
 
-          <AlertDialog open={winStatus !== null}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {winStatus ? 'Congratulations!' : 'Sorry, try again!'}
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  {winStatus
-                    ? 'You guessed it right!'
-                    : 'You guessed it wrong! The correct answer was ' +
-                      data[campusToPlay].name +
-                      '.'}
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel
-                  onClick={() => {
-                    router.push('/');
-                  }}
-                >
-                  Go Home
-                </AlertDialogCancel>
-                <AlertDialogAction onClick={newGame}>
-                  Play Again
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-
-          <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
-            <CommandInput placeholder="Type a campus to search..." />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              {data.map((campus) => (
-                <CommandItem
-                  key={campus.name}
-                  className="cursor-pointer"
-                  onSelect={() => {
-                    setSelectedCampus(campus.name);
+          <Modal
+            isOpen={searchOpen}
+            onOpenChange={() => setSearchOpen(!searchOpen)}
+          >
+            <ModalContent>
+              <ModalHeader>Search for a campus</ModalHeader>
+              <ModalBody>
+                <Autocomplete
+                  placeholder="Type a campus to search..."
+                  defaultSelectedKey={selectedCampus}
+                  onSelectionChange={(value) => {
+                    setSelectedCampus(value as string);
                     setSearchOpen(false);
                   }}
                 >
-                  <span>{campus.name}</span>
-                </CommandItem>
-              ))}
-            </CommandList>
-          </CommandDialog>
+                  {data.map((campus) => (
+                    <AutocompleteItem key={campus.name} value={campus.name}>
+                      {campus.name}
+                    </AutocompleteItem>
+                  ))}
+                </Autocomplete>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  onClick={() => {
+                    setSearchOpen(false);
+                  }}
+                >
+                  Close
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+
+          <Modal
+            isOpen={gameOverOpen}
+            isDismissable={false}
+            hideCloseButton
+            backdrop="blur"
+          >
+            <ModalContent>
+              <ModalHeader>
+                {winStatus ? 'Congratulations!' : 'Sorry, try again!'}
+              </ModalHeader>
+              <ModalBody>
+                {winStatus
+                  ? 'You guessed it right!'
+                  : 'You guessed it wrong! The correct answer was ' +
+                    data[campusToPlay].name +
+                    '.'}
+              </ModalBody>
+              <ModalFooter>
+                <Link href="/">
+                  <Button>Go Home</Button>
+                </Link>
+                <Button
+                  onPress={() => {
+                    setGameOverOpen(false);
+                    newGame();
+                  }}
+                >
+                  Play Again
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </div>
       )}
     </div>

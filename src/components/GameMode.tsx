@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@nextui-org/react';
 
 export default function Game({
   data,
@@ -21,7 +21,7 @@ export default function Game({
       onClick={loadGame}
       className="hover:shadow-lg hover:-translate-y-1 hover:scale-110 hover:cursor-pointer rounded-2xl transition duration-300 ease-in-out transform"
     >
-      <div className="flex flex-col items-center w-[270px] h-[200px] bg-secondary rounded-2xl">
+      <div className="flex flex-col items-center w-[270px] h-[200px] bg-content4 rounded-2xl">
         <div className="relative w-full h-[130px]">
           <Image
             src={data.image}
