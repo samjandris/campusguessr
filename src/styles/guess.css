@@ -1,0 +1,41 @@
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: all 1s ease-in-out;
+}
+
+.video,
+.video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .video {
+    height: 300%;
+    top: -100%;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .video {
+    width: 300%;
+    left: -100%;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .video,
+  .video iframe {
+    transform: scale(1.1);
+  }
+}
+
+*[data-visible='false'] {
+  opacity: 0;
+}

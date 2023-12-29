@@ -1,23 +1,30 @@
 # CampusGuessr
 
-Still early in development, currently **not** priority during university semesters.
+This is built using Next.js and TypeScript. It is a clone of GeoGuessr & CityGuesser, but for college campuses. It is currently a work in progress.
 
-## Prerequisite for Building/Developing
+## Prerequisites & Building
 
-### `npm install` inside of the project directory.
+First, install the dependencies:
 
-## Building
+```bash
+npm install
+```
 
-### `npm run build`
+Then, either:
 
-Builds the website using webpack.\
-Outputs to the `build` folder.
+Run the development server:
 
-## Development
+```bash
+npm run dev
+```
 
-### `npm start` - defaults to chrome
+OR
 
-Starts the website in the development mode, allowing for live editing.
+Run the production server:
 
-Load `build` as the folder for the unpacked extension.\
-The `build` folder will update as you save changes.
+```bash
+npm run build
+npm run start
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
