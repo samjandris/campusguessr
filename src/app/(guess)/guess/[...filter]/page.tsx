@@ -221,6 +221,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
               <ModalBody>
                 <Autocomplete
                   placeholder="Type a campus to search..."
+                  menuTrigger="input"
                   defaultSelectedKey={selectedCampus}
                   onSelectionChange={(value) => {
                     setSelectedCampus(value as string);
