@@ -195,6 +195,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             <Button
               variant="shadow"
               isIconOnly
+              isDisabled={youtubePlayerVolume <= 0}
               onPress={() => {
                 updateYoutubePlayerVolume(youtubePlayerVolume - 10);
               }}
@@ -204,6 +205,7 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
             <Button
               variant="shadow"
               isIconOnly
+              isDisabled={youtubePlayerVolume >= 100}
               onPress={() => {
                 updateYoutubePlayerVolume(youtubePlayerVolume + 10);
               }}
