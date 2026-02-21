@@ -64,6 +64,10 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
 
     setTimeout(() => {
       setCampusToPlay((prevToPlay) => {
+        if (data.length <= 1) {
+          return 0;
+        }
+
         let toPlay = Math.floor(Math.random() * data.length);
         while (prevToPlay === toPlay) {
           toPlay = Math.floor(Math.random() * data.length);
@@ -92,9 +96,9 @@ export default function Guess({ params }: { params: { filter: string[] } }) {
       setData(resData);
       setMapBounds(newMapBounds);
 
-      let toPlay = Math.floor(Math.random() * resData.length);
-      console.log(toPlay);
-      setCampusToPlay(toPlay);
+      if (resData.length > 0) {
+        setCampusToPlay(Math.floor(Math.random() * resData.length));
+      }
     });
   }, [params.filter]);
 
